@@ -1,0 +1,10 @@
+D:\vagan\Рабочий стол\C#\Game\Game\bin\Debug\Game.exe.config
+D:\vagan\Рабочий стол\C#\Game\Game\bin\Debug\Game.exe
+D:\vagan\Рабочий стол\C#\Game\Game\bin\Debug\Game.pdb
+D:\vagan\Рабочий стол\C#\Game\Game\obj\Debug\Game.csprojAssemblyReference.cache
+D:\vagan\Рабочий стол\C#\Game\Game\obj\Debug\Game.Form1.resources
+D:\vagan\Рабочий стол\C#\Game\Game\obj\Debug\Game.Properties.Resources.resources
+D:\vagan\Рабочий стол\C#\Game\Game\obj\Debug\Game.csproj.GenerateResource.cache
+D:\vagan\Рабочий стол\C#\Game\Game\obj\Debug\Game.csproj.CoreCompileInputs.cache
+D:\vagan\Рабочий стол\C#\Game\Game\obj\Debug\Game.exe
+D:\vagan\Рабочий стол\C#\Game\Game\obj\Debug\Game.pdb
