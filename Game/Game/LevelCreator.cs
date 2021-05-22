@@ -38,6 +38,17 @@ namespace Game
                 "wwwwwwwwwwwwwwwwwwww"
             };
 
+        public static string[] MapPattern3 = new string[]
+            {
+                "wwwwwwwwwwwwwwwwwwww",
+                "w     w m w        w",
+                "w  p  w   w    m   w",
+                "w     w   w        w",
+                "w     w   w wwwwwwww",
+                "w                  w",
+                "wwwwwwwwwwwwwwwwwwww"
+            };
+
 
         public static Model CreateLevelFromStringPattern(string[] map)
         {

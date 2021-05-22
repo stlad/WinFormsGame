@@ -69,28 +69,50 @@ namespace Game
             Speed = 2;
         }
 
-        public void GetPathToPoint(PointF pt)
+        //public void GetPathToPoint(PointF pt)
+        //{
+        //    var task = new Task<List<PointF>>(() => PathFinder.FindPaths(this.BelongsToLevel, this, pt));
+        //    task.Start();
+        //    task.Wait();
+        //    var list = task.Result;
+        //    var moveTask = new Task(() => ConvertPointsToMoves(list));
+        //    moveTask.Start(); 
+        //}
+
+        //private void ConvertPointsToMoves(List<PointF> pts)
+        //{
+        //    var currentDelta = new PointF(0, 0);
+        //    var previous = pts[0];
+        //    foreach (var pt in pts)
+        //    {
+        //        currentDelta = new PointF(pt.X - previous.X, pt.Y - pt.Y);
+        //        //MovesQueue.Enqueue(() => Move(currentDelta.X, currentDelta.Y));
+        //        Moves.Enqueue(currentDelta);
+        //        previous = pt;
+        //    }
+        //}
+
+
+        public void Logic()
         {
-            var task = new Task<List<PointF>>(() => PathFinder.FindPaths(this.BelongsToLevel, this, pt));
-            task.Start();
-            task.Wait();
-            var list = task.Result;
-            var moveTask = new Task(() => ConvertPointsToMoves(list));
-            moveTask.Start(); 
+            ChangeMonsterPosition();
         }
 
-        private void ConvertPointsToMoves(List<PointF> pts)
+        private void ChangeMonsterPosition()
         {
-            var currentDelta = new PointF(0, 0);
-            var previous = pts[0];
-            foreach (var pt in pts)
+            var rnd = new Random();
+            var previousDelta = this.Moves.Dequeue();
+            var newDelta = new PointF();
+            if (!this.Move(previousDelta))
             {
-                currentDelta = new PointF(pt.X - previous.X, pt.Y - pt.Y);
-                //MovesQueue.Enqueue(() => Move(currentDelta.X, currentDelta.Y));
-                Moves.Enqueue(currentDelta);
-                previous = pt;
+                newDelta = previousDelta;
             }
+            else
+            {
+                newDelta = MapElement.PossibleDeltas[rnd.Next() %8];
+            }
+            this.DirectionOfView = ConvertDeltaToDirection(newDelta);
+            this.Moves.Enqueue(newDelta);
         }
-
     }
 }

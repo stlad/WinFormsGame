@@ -55,7 +55,6 @@
     </Compile>
     <Compile Include="Interfaces\ICreature.cs" />
     <Compile Include="LevelCreator.cs" />
-    <Compile Include="MonsterMoves.cs" />
     <Compile Include="MVC\GameControls.cs" />
     <Compile Include="MapElement.cs" />
     <Compile Include="MVC\Model.cs" />

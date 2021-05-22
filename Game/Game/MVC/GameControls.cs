@@ -47,8 +47,7 @@ namespace Game
             {
                 if (creat is Monster monster && monster.NeedToMove)
                 {
-                    var delta = monster.Moves.Dequeue();
-                    MonsterMoves.GetNextMove(monster, delta);
+                    monster.Logic();
                     //monster.Move();
                 }
             }

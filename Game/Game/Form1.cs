@@ -96,6 +96,7 @@ namespace Game
             {
                 LevelCreator.CreateLevelFromStringPattern(LevelCreator.MapPattern1),
                 LevelCreator.CreateLevelFromStringPattern(LevelCreator.MapPattern2),
+                LevelCreator.CreateLevelFromStringPattern(LevelCreator.MapPattern3),
             };
             Level = Levels.First();
         }
