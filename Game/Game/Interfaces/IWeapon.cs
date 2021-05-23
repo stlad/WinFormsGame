@@ -10,6 +10,7 @@ namespace Game
 {
     public interface IWeapon
     {
+        string Name { get; }
         float Damage { get; set; }
         RectangleF HitBox { get;}
         bool InAction { get; set; }
@@ -18,6 +19,8 @@ namespace Game
         Queue<int> AnimationQueue { get; set; }
         
         int AnimationFrameTimerInTicks { get; set; }
+
+        void LightAttack();
     }
 
     

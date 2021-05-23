@@ -51,6 +51,7 @@ namespace Game
                     //monster.Move();
                 }
             }
+            level.RemoveDeadCreatures();
             
         }
 

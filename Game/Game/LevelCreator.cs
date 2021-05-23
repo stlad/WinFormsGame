@@ -74,6 +74,7 @@ namespace Game
                             break;
                         case 'm':
                             var monster = new Monster(loc, Model.TileSize) {BelongsToLevel = model};
+                            monster.ActiveWeapon = new Claws(monster, 10);
                             monster.Moves.Enqueue(new PointF(1, 0));
                             model.Creatures.Add(monster);
                             break;

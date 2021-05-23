@@ -15,6 +15,7 @@ namespace Game
         public float Speed { get; set; }=10;
         public IWeapon ActiveWeapon { get; set; }
         public Direction DirectionOfView { get; set; }
+
         public Creature(PointF loc, SizeF tileSize) : base(loc,tileSize) { }
 
         public bool Move(float dx, float dy)
@@ -45,8 +46,6 @@ namespace Game
             return touched;
         }
         public bool Move(PointF delta) => Move(delta.X, delta.Y);
-
-
     }
 
     public class Player : Creature
@@ -62,40 +61,22 @@ namespace Game
     {
         public bool NeedToMove => Moves.Count != 0;
         public Queue<PointF> Moves = new Queue<PointF>();
+        public RectangleF AreaOfVision => GetAriaOFVision();
         public Monster(PointF loc, SizeF tileSize) : base(loc,tileSize) 
         {
-            Health = 20;
+            Health = 30;
             Symbol = 'm';
             Speed = 2;
         }
 
-        //public void GetPathToPoint(PointF pt)
-        //{
-        //    var task = new Task<List<PointF>>(() => PathFinder.FindPaths(this.BelongsToLevel, this, pt));
-        //    task.Start();
-        //    task.Wait();
-        //    var list = task.Result;
-        //    var moveTask = new Task(() => ConvertPointsToMoves(list));
-        //    moveTask.Start(); 
-        //}
-
-        //private void ConvertPointsToMoves(List<PointF> pts)
-        //{
-        //    var currentDelta = new PointF(0, 0);
-        //    var previous = pts[0];
-        //    foreach (var pt in pts)
-        //    {
-        //        currentDelta = new PointF(pt.X - previous.X, pt.Y - pt.Y);
-        //        //MovesQueue.Enqueue(() => Move(currentDelta.X, currentDelta.Y));
-        //        Moves.Enqueue(currentDelta);
-        //        previous = pt;
-        //    }
-        //}
-
-
         public void Logic()
         {
-            ChangeMonsterPosition();
+            if (AreaOfVision.IntersectsWith(BelongsToLevel.Player.HitBox) && ActiveWeapon != null
+                && !ActiveWeapon.InAction)
+            {
+                ActiveWeapon.LightAttack();
+            }
+                ChangeMonsterPosition();
         }
 
         private void ChangeMonsterPosition()
@@ -113,6 +94,36 @@ namespace Game
             }
             this.DirectionOfView = ConvertDeltaToDirection(newDelta);
             this.Moves.Enqueue(newDelta);
+        }
+
+        private RectangleF GetAriaOFVision()
+        {
+
+            var size = new SizeF(Size.Width * 3, Size.Height * 3);
+            var loc = new PointF(HitBox.Left - Size.Width, Location.Y);
+            switch (DirectionOfView)
+            {
+                case MapElement.Direction.Up:
+                    loc = new PointF(HitBox.Left - HitBox.Width,
+                   HitBox.Top - HitBox.Height*2);
+                    return new RectangleF(loc, size);
+
+                case MapElement.Direction.Down:
+                    loc = new PointF(HitBox.Left - HitBox.Width,
+                   HitBox.Top);
+                    return new RectangleF(loc, size);
+
+                case MapElement.Direction.Left:
+                    loc = new PointF(HitBox.Left-HitBox.Width*2,
+                    HitBox.Top - HitBox.Height);
+                    return new RectangleF(loc, size);
+
+                case MapElement.Direction.Right:
+                    loc = new PointF(HitBox.Left,
+                    HitBox.Top - HitBox.Height);
+                    return new RectangleF(loc, size);
+            }
+            return new RectangleF();
         }
     }
 }

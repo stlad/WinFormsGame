@@ -28,6 +28,8 @@ namespace Game
 
             Sword.Attack += (Creature) =>
                 AttackIntersection(Creature);
+            Claws.Attack += (Creature) =>
+                AttackIntersection(Creature);
 
             Creatures = new List<Creature>();
             Terrains = new List<Terrain>();
@@ -57,6 +59,7 @@ namespace Game
             {
                 if (!creature.ActiveWeapon.InAction) break;
                 if (creature == conflictCreature) continue;
+                if (creature is Monster && conflictCreature is Monster) continue;
                 var rect = RectangleF.Intersect(creature.ActiveWeapon.HitBox, conflictCreature.HitBox);
                 if (rect != RectangleF.Empty)
                 { 
@@ -65,7 +68,7 @@ namespace Game
                         GameOver();                    
                 }
             }
-            level.RemoveDeadCreatures();
+            //level.RemoveDeadCreatures();
         }
 
         public void RemoveDeadCreatures() => this.Creatures.RemoveAll(n => n.IsAlive == false);

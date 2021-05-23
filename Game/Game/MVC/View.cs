@@ -27,6 +27,7 @@ namespace Game
                 {
                     var rect = new RectangleF(new PointF(i * Model.TileSize.Width, j * Model.TileSize.Height), Model.TileSize);
                     g.DrawImage(image, rect);
+                    
                 }
             }
             //var playRegion = new RectangleF(new PointF(0,0), model.MapSize);
@@ -93,6 +94,12 @@ namespace Game
                 {
                     var pen = player.ActiveWeapon.InAction ? new Pen(Brushes.Red) : new Pen(Brushes.Blue);
                     g.DrawRectangles(pen, new RectangleF[1] { player.ActiveWeapon.HitBox });
+                }
+                if (creat is Monster monster)
+                {
+                    var pen = monster.ActiveWeapon.InAction ? new Pen(Brushes.Red) : new Pen(Brushes.Blue);
+                    g.DrawRectangles(pen, new RectangleF[1] { monster.ActiveWeapon.HitBox });
+                    g.DrawRectangles(new Pen(Brushes.AliceBlue), new RectangleF[1] { monster.AreaOfVision });
                 }
                 g.DrawString(creat.Health.ToString(), new Font("Arial", 10), Brushes.Red, creat.Location);
             }
