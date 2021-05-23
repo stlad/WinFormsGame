@@ -8,8 +8,17 @@ using System.Windows.Forms;
 
 namespace Game
 {
+    public enum GameStates
+    {
+        Over,
+        LevelChanging,
+        InGame,
+        MainMenu
+    }
+
     public class Model
     {
+
         public static event Action GameOver;
         public int LevelId { get; set; }
         public bool IsOver { get; set; } = false;

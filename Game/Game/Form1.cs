@@ -20,27 +20,29 @@ namespace Game
         public bool PlayerView { get; set; } = false;
         public TableLayoutPanel DebugPanel { get; set; }
         public Model Level = new Model();
-        public static bool IsOver { get; set; } = false;
+        //public static bool IsOver { get; set; } = false;
+        public static GameStates GameState { get; set; } = GameStates.InGame;
         public int GlobalTime;
-        
+
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (!IsOver)
+            switch (GameState)
             {
-                e.Graphics.TranslateTransform(View.MapZeroPoint.X, View.MapZeroPoint.Y);
-                View.DrawMap(e, Level);
-                View.DrawCreatures(e, Level, GlobalTime);
-                View.DrawTerrain(e, Level);
-                View.DrawHitAnimation(e, Level, GlobalTime);
-                if (PlayerView) View.DrawLineFromPlayer(e, Level, ClientCursor);
-                if (HitBoxes) View.DrawHitBoxes(e, Level);
-                View.DrawUserInterface(e, Level);
-                //e.Graphics.DrawString(Level.LevelTime.ToString(), new Font("Arial", 10), Brushes.Red, new PointF(400, 400));
-            }
-            else
-            {
-                e.Graphics.DrawString("GAME OVER, bye", new Font("Arial", 30), Brushes.Black, 
-                    new Point(ClientSize.Width / 2, ClientSize.Height / 2));
+                case GameStates.InGame:
+                    e.Graphics.TranslateTransform(View.MapZeroPoint.X, View.MapZeroPoint.Y);
+                    View.DrawMap(e, Level);
+                    View.DrawCreatures(e, Level, GlobalTime);
+                    View.DrawTerrain(e, Level);
+                    View.DrawHitAnimation(e, Level, GlobalTime);
+                    if (PlayerView) View.DrawLineFromPlayer(e, Level, ClientCursor);
+                    if (HitBoxes) View.DrawHitBoxes(e, Level);
+                    View.DrawUserInterface(e, Level);
+                    //e.Graphics.DrawString(Level.LevelTime.ToString(), new Font("Arial", 10), Brushes.Red, new PointF(400, 400));
+                    break;
+                case GameStates.Over:
+                    e.Graphics.DrawString("GAME OVER, bye", new Font("Arial", 30), Brushes.Black,
+                        new Point(ClientSize.Width / 2, ClientSize.Height / 2));
+                    break;
             }
         }
 
@@ -109,7 +111,7 @@ namespace Game
         }
         private void GetModelEvents()
         {
-            Model.GameOver += () => IsOver = true;
+            Model.GameOver += () => GameState = GameStates.Over;
         }
 
         private void GetGameOverButtons()

@@ -48,11 +48,9 @@ namespace Game
                 if (creat is Monster monster && monster.NeedToMove)
                 {
                     monster.Logic();
-                    //monster.Move();
                 }
             }
             level.RemoveDeadCreatures();
-            
         }
 
 
@@ -75,7 +73,7 @@ namespace Game
             if (pressedKeys.Contains(Keys.K))
             {
                 player.Health = 0;
-                Form1.IsOver = true;
+                Form1.GameState = GameStates.Over;
             }
 
             pressedKeys.Remove(key);
