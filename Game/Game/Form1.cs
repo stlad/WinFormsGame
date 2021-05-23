@@ -34,6 +34,7 @@ namespace Game
                 View.DrawHitAnimation(e, Level, GlobalTime);
                 if (PlayerView) View.DrawLineFromPlayer(e, Level, ClientCursor);
                 if (HitBoxes) View.DrawHitBoxes(e, Level);
+                View.DrawUserInterface(e, Level);
                 //e.Graphics.DrawString(Level.LevelTime.ToString(), new Font("Arial", 10), Brushes.Red, new PointF(400, 400));
             }
             else

@@ -40,13 +40,13 @@ namespace Game
 
         public static string[] MapPattern3 = new string[]
             {
-                "wwwwwwwwwwwwwwwwwwww",
-                "w     w m w        w",
-                "w  p  w   w    m   w",
-                "w     w   w        w",
-                "w     w   w wwwwwwww",
-                "w                  w",
-                "wwwwwwwwwwwwwwwwwwww"
+                "wwwwwwwwwwwwwwwwwwwww",
+                "w     w  m w        w",
+                "w  p  w    w    m   w",
+                "w     w    w        w",
+                "w              wwwwww",
+                "w                   w",
+                "wwwwwwwwwwwwwwwwwwwww"
             };
 
 
@@ -67,7 +67,7 @@ namespace Game
                             model.Terrains.Add(new Wall(loc, Model.TileSize) { BelongsToLevel = model });
                             break;
                         case 'p':
-                            var player = new Player(loc, Model.TileSize) {BelongsToLevel = model};
+                            var player = new Player(loc,Model.TileSize) {BelongsToLevel = model};
                             player.ActiveWeapon = new Sword(player, 5);
                             model.Player = player;
                             model.Creatures.Add(player);

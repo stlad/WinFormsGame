@@ -16,7 +16,7 @@ namespace Game
         public Creature ParentCreature { get; set; }
         public int LightAttackCoolDown { get; set; } = 1000;
         public bool InAction { get; set; }
-        public int AnimationFrameTimerInTicks { get; set; } = 1;
+        public int AnimationFrameTimerInTicks { get; set; } = 5;
         public Queue<int> AnimationQueue { get; set; }
         public Claws(Creature creat, float damage)
         {
@@ -59,7 +59,7 @@ namespace Game
         public async void LightAttack()
         {
             InAction = true;
-            AnimationQueue = new Queue<int>(new int[] { 0, 1, 2 });
+            AnimationQueue = new Queue<int>(new int[] { 0, 1, 2,3 });
             Attack(ParentCreature);
             await Task.Delay(LightAttackCoolDown);
             InAction = false;

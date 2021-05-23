@@ -50,7 +50,7 @@ namespace Game
                 if (creature is Monster)
                 {
 
-                    image = new Bitmap(bitmaps[$"Monster{(time / 40) %1}.png"]);
+                    image = new Bitmap(bitmaps[$"Monster{(time / 40) %2}.png"]);
                     image.RotateFlip(ConverDirectionToRotation(creature.DirectionOfView));
                     g.DrawImage(image, rect);
 
@@ -128,13 +128,38 @@ namespace Game
                     var rect = creature.ActiveWeapon.HitBox;
                     var frameNumber = creature.ActiveWeapon.AnimationQueue.Peek();
                     if (model.LevelTime % creature.ActiveWeapon.AnimationFrameTimerInTicks == 0) creature.ActiveWeapon.AnimationQueue.Dequeue();
-                    image = new Bitmap(bitmaps[$"Sword{frameNumber}.png"]);
+                    image = new Bitmap(bitmaps[$"{creature.ActiveWeapon.Name}{frameNumber}.png"]);
                     image.RotateFlip(ConverDirectionToRotation(creature.DirectionOfView));
                     g.DrawImage(image, rect);
                 }    
             }
         }
 
+        public static void DrawUserInterface(PaintEventArgs e, Model model)
+        {
+            DrawHealthBar(e, model);
+        }
+
+        private static void DrawHealthBar(PaintEventArgs e, Model model)
+        {
+            var g = e.Graphics;
+            var HealthBarFullSize = new Size(300, 30);
+            var HealthBarFullRect = new RectangleF(new PointF(0, Model.TileSize.Height * model.MapSizeInTiles.Height + 30),
+                HealthBarFullSize);
+            g.DrawRectangles(new Pen(Brushes.Black), new RectangleF[1] { HealthBarFullRect });
+            var healthFactor = model.Player.Health / model.Player.FullHealth;
+            var healthLeftRect = new RectangleF(HealthBarFullRect.Location,
+                new SizeF(HealthBarFullSize.Width * healthFactor, HealthBarFullSize.Height));
+            var healthLostRect = new RectangleF(new PointF(healthLeftRect.Right, HealthBarFullRect.Top),
+                new SizeF(HealthBarFullSize.Width - healthLeftRect.Width, HealthBarFullSize.Height));
+            g.FillRectangles(Brushes.Green, new RectangleF[1] { healthLeftRect });
+            g.FillRectangles(Brushes.Red, new RectangleF[1] { healthLostRect });
+
+            g.DrawString($"{model.Player.Health}/{model.Player.FullHealth}", new Font("Arial", 20), Brushes.Black,
+                new PointF(HealthBarFullRect.Right + 10, HealthBarFullRect.Top));
+        }
+        
+        
         public static RotateFlipType ConverDirectionToRotation(MapElement.Direction dir)
         {
             if (dir == MapElement.Direction.Up) return RotateFlipType.Rotate180FlipNone;

@@ -11,6 +11,7 @@ namespace Game
     {
         public static event Func<Creature,RectangleF, Model, RectangleF> CreatureTryingToMove;
         public float Health { get; set; }
+        public float FullHealth { get; set; }
         public bool IsAlive => this.Health > 0;
         public float Speed { get; set; }=10;
         public IWeapon ActiveWeapon { get; set; }
@@ -52,7 +53,8 @@ namespace Game
     {
         public Player(PointF loc, SizeF tileSize) : base(loc, tileSize) 
         {
-            Health = 100;
+            FullHealth = 100;
+            Health = FullHealth;
             Symbol = 'p';
         }
     }
@@ -64,7 +66,8 @@ namespace Game
         public RectangleF AreaOfVision => GetAriaOFVision();
         public Monster(PointF loc, SizeF tileSize) : base(loc,tileSize) 
         {
-            Health = 30;
+            FullHealth = 30;
+            Health = FullHealth;
             Symbol = 'm';
             Speed = 2;
         }
