@@ -20,8 +20,7 @@ namespace Game
         public bool PlayerView { get; set; } = false;
         public TableLayoutPanel DebugPanel { get; set; }
         public Model Level = new Model();
-        //public static bool IsOver { get; set; } = false;
-        public static GameStates GameState { get; set; } = GameStates.InGame;
+        public static GameStates GameState { get; set; } = GameStates.MainMenu;
         public int GlobalTime;
 
         protected override void OnPaint(PaintEventArgs e)
@@ -40,12 +39,13 @@ namespace Game
                     //e.Graphics.DrawString(Level.LevelTime.ToString(), new Font("Arial", 10), Brushes.Red, new PointF(400, 400));
                     break;
                 case GameStates.Over:
-                    e.Graphics.DrawString("GAME OVER, bye", new Font("Arial", 30), Brushes.Black,
+                    e.Graphics.DrawString("GAME OVER", new Font("Arial", 30), Brushes.Black,
                         new Point(ClientSize.Width / 2, ClientSize.Height / 2));
+                    
+                    GameState = GameStates.MainMenu;
                     break;
                 case GameStates.MainMenu:
                     break;
-
             }
         }
 
@@ -69,7 +69,16 @@ namespace Game
             {
                 GameControls.ConverKeysToActions(Level);
                 GlobalTime = int.MaxValue == GlobalTime? 0: GlobalTime+1;
-                //if (GameState != GameStates.MainMenu) Controls.Remove(menuPanel);
+                if (GameState != GameStates.MainMenu)
+                {
+                    menuPanel.Enabled = false;
+                    Controls.Remove(menuPanel);
+                }
+                else
+                {
+                    menuPanel.Enabled = true;
+                    Controls.Add(menuPanel);
+                }
                 Invalidate();
             };
             timer.Start();
@@ -114,35 +123,12 @@ namespace Game
         private void GetModelEvents()
         {
             Model.GameOver += () => GameState = GameStates.Over;
-        }
-
-        private void GetButtons()
-        {
-            var hitBoxButton = new Button()
+            Model.LevelComplete += () =>
             {
-                Text = $"Show Hit Boxes  ({HitBoxes})",
-                Location = new Point((int)View.MapZeroPoint.X, (int)(View.MapZeroPoint.Y + Level.MapSizeInTiles.Height)),
-                Size = new Size(200, 100)
+                var index = Levels.IndexOf(Level) + 1;
+                if (index < Levels.Count)
+                    Level = Levels[index];
             };
-            hitBoxButton.Click += (sender, args) =>
-            {
-                HitBoxes = !HitBoxes;
-                hitBoxButton.Text = $"Show Hit Boxes({HitBoxes})";
-            };
-            Controls.Add(hitBoxButton);
-
-            var playerViewButton = new Button()
-            {
-                Text = $"Show Player View Line ({PlayerView})",
-                Location = new Point((int)View.MapZeroPoint.X, hitBoxButton.Bottom),
-                Size = new Size(200, 100)
-            };
-            playerViewButton.Click += (sender, args) =>
-            {
-                PlayerView = !PlayerView;
-                playerViewButton.Text = $"Show Player View Line({PlayerView})";
-            };
-            Controls.Add(playerViewButton);
         }
         private TableLayoutPanel GetMainMenu()
         {
@@ -175,6 +161,5 @@ namespace Game
             panel.Controls.Add(exitButton, 0, 1);
             return panel;
         }
-
     }
 }

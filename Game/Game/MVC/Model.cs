@@ -18,7 +18,7 @@ namespace Game
 
     public class Model
     {
-
+        public static event Action LevelComplete;
         public static event Action GameOver;
         public int LevelId { get; set; }
         public bool IsOver { get; set; } = false;
@@ -74,7 +74,9 @@ namespace Game
                 { 
                     conflictCreature.Health -= creature.ActiveWeapon.Damage;
                     if (conflictCreature is Player && !conflictCreature.IsAlive)
-                        GameOver();                    
+                        GameOver();
+                    if (conflictCreature is Monster && !conflictCreature.IsAlive && level.Creatures.Count == 1)
+                        LevelComplete();
                 }
             }
             //level.RemoveDeadCreatures();
