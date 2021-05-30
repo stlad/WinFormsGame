@@ -44,7 +44,7 @@ namespace Game
                 "w     w  m w        w",
                 "w  p  w    w    m   w",
                 "w     w    w        w",
-                "w              wwwwww",
+                "w                 www",
                 "w                   w",
                 "wwwwwwwwwwwwwwwwwwwww"
             };

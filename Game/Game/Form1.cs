@@ -43,6 +43,9 @@ namespace Game
                     e.Graphics.DrawString("GAME OVER, bye", new Font("Arial", 30), Brushes.Black,
                         new Point(ClientSize.Width / 2, ClientSize.Height / 2));
                     break;
+                case GameStates.MainMenu:
+                    break;
+
             }
         }
 
@@ -56,12 +59,8 @@ namespace Game
             GetLevels();
             GetImages();
             GetModelEvents();
+            var menuPanel = GetMainMenu();
 
-
-            
-                //if (Level.Creatures[1] is Monster monster)
-                //    monster.GetPathToPoint(Level.Player.Location);
-            
             ClientSize = new Size((int)Level.MapSize.Width+100, (int)Level.MapSize.Height + 150);
 
             var timer = new Timer();
@@ -70,9 +69,12 @@ namespace Game
             {
                 GameControls.ConverKeysToActions(Level);
                 GlobalTime = int.MaxValue == GlobalTime? 0: GlobalTime+1;
+                //if (GameState != GameStates.MainMenu) Controls.Remove(menuPanel);
                 Invalidate();
             };
             timer.Start();
+
+            //Controls.Add(menuPanel);
         }
 
 
@@ -114,16 +116,6 @@ namespace Game
             Model.GameOver += () => GameState = GameStates.Over;
         }
 
-        private void GetGameOverButtons()
-        {
-            var exitButton = new Button()
-            {
-                Location = new Point(ClientSize.Width / 2, ClientSize.Height / 2),
-                Size = new Size(50, 50),
-                Text = "EXIT"
-            };
-        }
-
         private void GetButtons()
         {
             var hitBoxButton = new Button()
@@ -152,39 +144,35 @@ namespace Game
             };
             Controls.Add(playerViewButton);
         }
-        private TableLayoutPanel GetDebugPanel()
+        private TableLayoutPanel GetMainMenu()
         {
             var panel = new TableLayoutPanel();
-            panel.Location = new Point((int)View.MapZeroPoint.X, (int)(View.MapZeroPoint.Y + Level.MapSizeInTiles.Height));
+            panel.Location = new Point(ClientSize.Width/2,ClientSize.Height/2);
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             panel.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             panel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
 
-            var hitBoxButton = new Button()
+            var newGameButton = new Button()
             {
-                Text = $"Show Hit Boxes  ({HitBoxes})",
-                Size = new Size(200,100)
+                Size = new Size(300, 200),
+                Text = "New Game"
             };
-            hitBoxButton.Click += (sender, args) => 
+            newGameButton.Click += (s, arg) =>
             {
-                HitBoxes = !HitBoxes;
-                hitBoxButton.Text = $"Show Hit Boxes({HitBoxes})";
-            };
-            panel.Controls.Add(hitBoxButton, 0, 0);
-            
-            var playerViewButton = new Button()
-            {
-                Text = $"Show Player View Line ({PlayerView})",
-                Size = new Size(200, 100)
-            };
-            playerViewButton.Click += (sender, args) =>
-            {
-                PlayerView = !PlayerView;
-                playerViewButton.Text = $"Show Player View Line({PlayerView})";
-            };
-            panel.Controls.Add(playerViewButton, 0, 1);
+                Levels.Clear();
 
-            
+                GetLevels();
+                GameState = GameStates.InGame;
+            };
+            panel.Controls.Add(newGameButton, 0, 0);
+
+            var exitButton = new Button()
+            {
+                Size = new Size(300, 200),
+                Text = "EXIT"
+            };
+            exitButton.Click += (s, args) => Application.Exit();
+            panel.Controls.Add(exitButton, 0, 1);
             return panel;
         }
 
