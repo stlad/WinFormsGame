@@ -30,11 +30,11 @@ namespace Game
         public static string[] MapPattern2 = new string[]
             {
                 "wwwwwwwwwwwwwwwwwwww",
-                "w                  w",
-                "w  p               w",
-                "w                  w",
-                "w                  w",
-                "w                  w",
+                "w               wwww",
+                "w  p           m   w",
+                "w        ww        w",
+                "w        ww    m   w",
+                "w        ww  m     w",
                 "wwwwwwwwwwwwwwwwwwww"
             };
 

@@ -68,21 +68,22 @@ namespace Game
             timer.Tick += (sender, args) =>
             {
                 GameControls.ConverKeysToActions(Level);
+                ClientSize = new Size((int)Level.MapSize.Width + 100, (int)Level.MapSize.Height + 150);
                 GlobalTime = int.MaxValue == GlobalTime? 0: GlobalTime+1;
                 if (GameState != GameStates.MainMenu)
                 {
-                    menuPanel.Enabled = false;
                     Controls.Remove(menuPanel);
+                    menuPanel.Enabled = false;
                 }
                 else
                 {
-                    menuPanel.Enabled = true;
                     Controls.Add(menuPanel);
+                    menuPanel.Enabled = true;
                 }
                 Invalidate();
             };
             timer.Start();
-
+            Controls.Add(menuPanel);
             //Controls.Add(menuPanel);
         }
 
@@ -100,8 +101,16 @@ namespace Game
             };
             GameControls.DebugEnabled += () => { HitBoxes = !HitBoxes; PlayerView = !PlayerView; };
 
-            KeyUp += (sender, EventArgs) => GameControls.RemovePressedKeyWhenUp(EventArgs.KeyCode, Level.Player);
-            KeyDown += (sender, EventArgs) => GameControls.AddPressedKeyWhenDown(EventArgs.KeyCode, Level.Player);
+            KeyUp += (sender, EventArgs) =>
+            {
+                EventArgs.SuppressKeyPress = true;
+                GameControls.RemovePressedKeyWhenUp(EventArgs.KeyCode, Level.Player);
+            };
+            KeyDown += (sender, EventArgs) =>
+            {
+                EventArgs.SuppressKeyPress = true;
+                GameControls.AddPressedKeyWhenDown(EventArgs.KeyCode, Level.Player);
+            };
             MouseMove += (sender, arg) => ClientCursor = (PointF)arg.Location;
         }
         private void GetLevels()
@@ -128,6 +137,7 @@ namespace Game
                 var index = Levels.IndexOf(Level) + 1;
                 if (index < Levels.Count)
                     Level = Levels[index];
+                else GameState = GameStates.MainMenu;
             };
         }
         private TableLayoutPanel GetMainMenu()

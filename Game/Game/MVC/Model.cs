@@ -75,14 +75,17 @@ namespace Game
                     conflictCreature.Health -= creature.ActiveWeapon.Damage;
                     if (conflictCreature is Player && !conflictCreature.IsAlive)
                         GameOver();
-                    if (conflictCreature is Monster && !conflictCreature.IsAlive && level.Creatures.Count == 1)
-                        LevelComplete();
+                    
                 }
             }
             //level.RemoveDeadCreatures();
         }
 
-        public void RemoveDeadCreatures() => this.Creatures.RemoveAll(n => n.IsAlive == false);
-        
+        public void RemoveDeadCreatures()
+        {
+            this.Creatures.RemoveAll(n => n.IsAlive == false);
+            if (this.Creatures.Count == 1 && this.Creatures[0] is Player)
+                LevelComplete();
+        }
     }
 }
