@@ -66,7 +66,7 @@ namespace Game
         public RectangleF AreaOfVision => GetAriaOFVision();
         public Monster(PointF loc, SizeF tileSize) : base(loc,tileSize) 
         {
-            FullHealth = 30;
+            FullHealth = 40;
             Health = FullHealth;
             Symbol = 'm';
             Speed = 2;

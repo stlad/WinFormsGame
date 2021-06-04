@@ -40,11 +40,13 @@ namespace Game
                     break;
                 case GameStates.Over:
                     e.Graphics.DrawString("GAME OVER", new Font("Arial", 30), Brushes.Black,
-                        new Point(ClientSize.Width / 2, ClientSize.Height / 2));
-                    
-                    GameState = GameStates.MainMenu;
+                        new Point(ClientSize.Width / 2-150, ClientSize.Height / 2-100));
+                    e.Graphics.DrawString($"Score: {Model.Score}", new Font("Arial", 20), Brushes.Black,
+                        new Point(ClientSize.Width / 2 - 70, ClientSize.Height / 2 - 50));
                     break;
                 case GameStates.MainMenu:
+                    e.Graphics.DrawString($"Score: {Model.Score}", new Font("Arial", 20), Brushes.Black,
+                        new Point(ClientSize.Width / 2 - 70, ClientSize.Height / 2 - 50));
                     break;
             }
         }
@@ -70,7 +72,7 @@ namespace Game
                 GameControls.ConverKeysToActions(Level);
                 ClientSize = new Size((int)Level.MapSize.Width + 100, (int)Level.MapSize.Height + 150);
                 GlobalTime = int.MaxValue == GlobalTime? 0: GlobalTime+1;
-                if (GameState != GameStates.MainMenu)
+                if (GameState != GameStates.MainMenu && GameState != GameStates.Over)
                 {
                     Controls.Remove(menuPanel);
                     menuPanel.Enabled = false;
@@ -120,8 +122,10 @@ namespace Game
                 LevelCreator.CreateLevelFromStringPattern(LevelCreator.MapPattern1),
                 LevelCreator.CreateLevelFromStringPattern(LevelCreator.MapPattern2),
                 LevelCreator.CreateLevelFromStringPattern(LevelCreator.MapPattern3),
+                LevelCreator.CreateLevelFromStringPattern(LevelCreator.MapPattern4),
             };
             Level = Levels.First();
+            Model.Score = 0;
         }
         private void GetImages()
         {
@@ -136,9 +140,17 @@ namespace Game
             {
                 var index = Levels.IndexOf(Level) + 1;
                 if (index < Levels.Count)
+                {
+                    var health = Level.Player.Health;
                     Level = Levels[index];
+                    Level.Player.Health = health;
+                }
                 else GameState = GameStates.MainMenu;
             };
+            Claws.Attack += (Creature) =>
+                Model.AttackIntersection(Creature);
+            Sword.Attack += (Creature) =>
+                Model.AttackIntersection(Creature);
         }
         private TableLayoutPanel GetMainMenu()
         {
@@ -169,6 +181,8 @@ namespace Game
             };
             exitButton.Click += (s, args) => Application.Exit();
             panel.Controls.Add(exitButton, 0, 1);
+
+            panel.Location = new Point(panel.Location.X + panel.Size.Width /2, panel.Location.Y  +panel.Size.Width / 2);
             return panel;
         }
     }

@@ -30,11 +30,11 @@ namespace Game
         public static string[] MapPattern2 = new string[]
             {
                 "wwwwwwwwwwwwwwwwwwww",
-                "w               wwww",
+                "w                 ww",
                 "w  p           m   w",
-                "w        ww        w",
-                "w        ww    m   w",
-                "w        ww  m     w",
+                "w                  w",
+                "w       ww     m   w",
+                "w         w  m     w",
                 "wwwwwwwwwwwwwwwwwwww"
             };
 
@@ -45,6 +45,22 @@ namespace Game
                 "w  p  w    w    m   w",
                 "w     w    w        w",
                 "w                 www",
+                "w                   w",
+                "wwwwwwwwwwwwwwwwwwwww"
+            };
+        public static string[] MapPattern4 = new string[]
+            {
+                "wwwwwwwwwwwwwwwwwwwww",
+                "w        m w        w",
+                "w  p       w    m   w",
+                "w          w        w",
+                "w          w        w",
+                "w      m   w        w",
+                "w          w        w",
+                "w               m   w",
+                "w                   w",
+                "w     m             w",
+                "w          m        w",
                 "w                   w",
                 "wwwwwwwwwwwwwwwwwwwww"
             };
@@ -68,13 +84,13 @@ namespace Game
                             break;
                         case 'p':
                             var player = new Player(loc,Model.TileSize) {BelongsToLevel = model};
-                            player.ActiveWeapon = new Sword(player, 5);
+                            player.ActiveWeapon = new Sword(player, 30);
                             model.Player = player;
                             model.Creatures.Add(player);
                             break;
                         case 'm':
                             var monster = new Monster(loc, Model.TileSize) {BelongsToLevel = model};
-                            monster.ActiveWeapon = new Claws(monster, 10);
+                            monster.ActiveWeapon = new Claws(monster, 30);
                             monster.Moves.Enqueue(new PointF(1, 0));
                             model.Creatures.Add(monster);
                             break;

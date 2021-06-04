@@ -138,6 +138,9 @@ namespace Game
         public static void DrawUserInterface(PaintEventArgs e, Model model)
         {
             DrawHealthBar(e, model);
+            var g = e.Graphics;
+            g.DrawString($"Score: {Model.Score}", new Font("Arial", 20), Brushes.Black,
+                new PointF(Model.TileSize.Width * model.MapSizeInTiles.Width - 150, Model.TileSize.Height * model.MapSizeInTiles.Height + 30));
         }
 
         private static void DrawHealthBar(PaintEventArgs e, Model model)
@@ -158,7 +161,6 @@ namespace Game
             g.DrawString($"{model.Player.Health}/{model.Player.FullHealth}", new Font("Arial", 20), Brushes.Black,
                 new PointF(HealthBarFullRect.Right + 10, HealthBarFullRect.Top));
         }
-        
         
         public static RotateFlipType ConverDirectionToRotation(MapElement.Direction dir)
         {

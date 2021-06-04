@@ -70,11 +70,11 @@ namespace Game
                     sword.LightAttack();
             }
 
-            if (pressedKeys.Contains(Keys.K))
-            {
-                player.Health = 0;
-                Form1.GameState = GameStates.Over;
-            }
+            //if (pressedKeys.Contains(Keys.K))
+            //{
+            //    player.Health = 0;
+            //    Form1.GameState = GameStates.Over;
+            //}
 
             pressedKeys.Remove(key);
         }

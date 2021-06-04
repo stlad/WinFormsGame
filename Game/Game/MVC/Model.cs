@@ -20,6 +20,7 @@ namespace Game
     {
         public static event Action LevelComplete;
         public static event Action GameOver;
+        public static int Score { get; set; }
         public int LevelId { get; set; }
         public bool IsOver { get; set; } = false;
         public Player Player { get; set; }
@@ -35,11 +36,7 @@ namespace Game
             Creature.CreatureTryingToMove += (creature,nextPosition,level) =>  
                 GetIntersectionWithWalls(creature,nextPosition, level);
 
-            Sword.Attack += (Creature) =>
-                AttackIntersection(Creature);
-            Claws.Attack += (Creature) =>
-                AttackIntersection(Creature);
-
+            
             Creatures = new List<Creature>();
             Terrains = new List<Terrain>();
 
@@ -73,9 +70,11 @@ namespace Game
                 if (rect != RectangleF.Empty)
                 { 
                     conflictCreature.Health -= creature.ActiveWeapon.Damage;
+                    if (conflictCreature is Monster && !conflictCreature.IsAlive)
+                        Model.Score += 1;
                     if (conflictCreature is Player && !conflictCreature.IsAlive)
                         GameOver();
-                    
+                    return;
                 }
             }
             //level.RemoveDeadCreatures();
